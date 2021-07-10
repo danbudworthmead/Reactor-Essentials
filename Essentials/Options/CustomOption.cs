@@ -3,6 +3,8 @@ using Essentials.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Reactor.Networking;
+using TMPro;
 #if !S20201209 && !S20210305 && !S202103313
 using TMPro;
 #endif
@@ -41,24 +43,17 @@ namespace Essentials.Options
         /// Enables or disables the credit string appended to the HUD (option list) in the lobby.
         /// Please provide credit or reference elsewhere if you disable this.
         /// </summary>
-        public static bool ShamelessPlug { get; set; } = true;
+        public static bool ShamelessPlug { get; set; } = false;
 
         /// <summary>
         /// Enables debug logging messages.
         /// </summary>
         public static bool Debug { get; set; } = true;
 
-#if S20201209 || S20210305 || S202103313
-        /// <summary>
-        /// The size of HUD (lobby options) text, game default is 0.65F, Essentials default is 0.5F.
-        /// </summary>
-        public static float HudTextScale { get; set; } = 0.5F;
-#else
         /// <summary>
         /// The size of HUD (lobby options) text, game default is 2, Essentials default is 1.4F.
         /// </summary>
         public static float HudTextFontSize { get; set; } = 1.4F;
-#endif
 
         /// <summary>
         /// Enables or disables the HUD (lobby options) text scroller.
@@ -148,11 +143,8 @@ namespace Essentials.Options
         /// </summary>
         public virtual Func<CustomOption, object, string> ValueStringFormat { get; set; } = DefaultValueStringFormat;
 
-#if S20201209 || S20210305 || S202103313
-        public static Func<CustomOption, string, string, string> DefaultHudStringFormat = (_, name, value) => $"{name}: {value}[]";
-#else
         public static Func<CustomOption, string, string, string> DefaultHudStringFormat = (_, name, value) => $"<color=#FFFFFFFF>{name}: {value}</color>";
-#endif
+
         /// <summary>
         /// The string format reflecting the option name and value, result returned by <see cref="ToString"/>.
         /// Used when displaying the option in the lobby HUD (option list).
@@ -243,22 +235,14 @@ namespace Essentials.Options
 
                 GameObject = o;
 
-#if S20201209 || S20210305 || S202103313
-                TextRenderer title = null;
-#else
                 TextMeshPro title = null;
-#endif
 
                 if (GameObject is ToggleOption toggle) title = toggle.TitleText;
                 else if (GameObject is NumberOption number) title = number.TitleText;
                 else if (GameObject is StringOption str) title = str.TitleText;
                 else if (GameObject is KeyValueOption kv) title = kv.TitleText;
 
-#if S20201209 || S20210305 || S202103313
-                if (title != null) title.Text = GetFormattedName();
-#else
                 if (title != null) title.text = GetFormattedName();
-#endif
 
                 if (!GameObjectCreated(o))
                 {
@@ -302,8 +286,9 @@ namespace Essentials.Options
             {
                 if (GameObject is ToggleOption toggle)
                 {
-                    if (Value is not bool newValue) return false;
+                    if (Value is not bool) return false;
 
+                    var newValue = (bool) Value;
                     toggle.oldValue = newValue;
                     if (toggle.CheckMark != null) toggle.CheckMark.enabled = newValue;
 
@@ -318,11 +303,7 @@ namespace Essentials.Options
 #endif
                     //else if (Value is bool newBoolValue) number.Value = number.oldValue = newBoolValue ? 1 : 0;
 
-#if S20201209 || S20210305 || S202103313
-                    if (number.ValueText != null) number.ValueText.Text = GetFormattedValue();
-#else
                     if (number.ValueText != null) number.ValueText.text = GetFormattedValue();
-#endif
 
                     return true;
                 }
@@ -331,11 +312,7 @@ namespace Essentials.Options
                     if (Value is int newValue) str.Value = str.oldValue = newValue;
                     else if (Value is bool newBoolValue) str.Value = str.oldValue = newBoolValue ? 1 : 0;
 
-#if S20201209 || S20210305 || S202103313
-                    if (str.ValueText != null) str.ValueText.Text = GetFormattedValue();
-#else
                     if (str.ValueText != null) str.ValueText.text = GetFormattedValue();
-#endif
 
                     return true;
                 }
@@ -344,11 +321,7 @@ namespace Essentials.Options
                     if (Value is int newValue) kv.Selected = kv.oldValue = newValue;
                     else if (Value is bool newBoolValue) kv.Selected = kv.oldValue = newBoolValue ? 1 : 0;
 
-#if S20201209 || S20210305 || S202103313
-                    if (kv.ValueText != null) kv.ValueText.Text = GetFormattedValue();
-#else
                     if (kv.ValueText != null) kv.ValueText.text = GetFormattedValue();
-#endif
 
                     return true;
                 }

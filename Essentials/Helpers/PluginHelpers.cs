@@ -39,12 +39,12 @@ namespace Essentials.Helpers
                     if (attribute.AttributeType != typeof(BepInPlugin)) continue;
 
                     CustomAttributeTypedArgument arg = attribute.ConstructorArguments.FirstOrDefault();
-                    if (arg == null || arg.ArgumentType != typeof(string) || arg.Value is not string value) continue;
+                    if (arg.ArgumentType != typeof(string)) continue;
 
                     //EssentialsPlugin.Logger.LogInfo($"pluginId: {value}");
 
                     //pluginId = value;
-                    return value;
+                    return arg.Value as string;
                 }
             }
 

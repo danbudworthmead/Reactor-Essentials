@@ -5,15 +5,7 @@ namespace Essentials.UI
     [HarmonyPatch]
     public partial class CooldownButton
     {
-#if S20201209 || S20210305
-        [HarmonyPatch(typeof(HudManager.CoShowIntro__d), nameof(HudManager.CoShowIntro__d.MoveNext))]
-#elif S202103313 || S20210510 || S20210630
         [HarmonyPatch(typeof(HudManager._CoShowIntro_d__56), nameof(HudManager._CoShowIntro_d__56.MoveNext))]
-#elif S20210615 || UNOBFUSCATED
-        [HarmonyPatch(typeof(HudManager._CoShowIntro_d__57), nameof(HudManager._CoShowIntro_d__57.MoveNext))]
-#else
-        [HarmonyPatch(typeof(HudManager.Nested_5), nameof(HudManager.Nested_5.MoveNext))]
-#endif
         [HarmonyPostfix]
         private static void HudManagerCoShowIntro()
         {
@@ -28,16 +20,7 @@ namespace Essentials.UI
             foreach (CooldownButton button in CooldownButtons) if (button.MeetingsEndEffect) button.EndEffect(false); // End button effect early.
         }
 
-        //[HarmonyPatch(typeof(ExileController.Animate__d), nameof(ExileController.Animate__d.MoveNext))]
-#if S20201209
-        [HarmonyPatch(typeof(ExileController), nameof(ExileController.Method_37))] //WrapUp 2020.12.9s
-#elif S20210305
-        [HarmonyPatch(typeof(ExileController), nameof(ExileController.Method_24))] //WrapUp 2021.3.5s
-#elif S202103313
-        [HarmonyPatch(typeof(ExileController), nameof(ExileController.GALOAPAFIMJ))] //WrapUp 2021.3.31.3s
-#else
         [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
-#endif
         [HarmonyPostfix]
         private static void ExileControllerWrapUp()
         {

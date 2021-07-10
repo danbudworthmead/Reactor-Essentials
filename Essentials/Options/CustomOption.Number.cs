@@ -93,8 +93,9 @@ namespace Essentials.Options
 
         protected override bool GameObjectCreated(OptionBehaviour o)
         {
-            if (o is not NumberOption number) return false;
+            if (o is not NumberOption) return false;
 
+            var number = o as NumberOption;
             number.ValidRange = new FloatRange(Min, Max);
             number.Increment = Increment;
 

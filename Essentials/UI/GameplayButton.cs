@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using InnerNet;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -322,11 +323,7 @@ namespace Essentials.UI
             KillButtonManager.gameObject.SetActive(visible);
 
             KillButtonManager.renderer.enabled = visible;
-#if S20201209 || S20210305
-            KillButtonManager.renderer.color = !Clickable ? Palette.DisabledColor : Palette.EnabledColor;
-#else
             KillButtonManager.renderer.color = !Clickable ? Palette.DisabledClear : Palette.EnabledColor;
-#endif
             KillButtonManager.renderer.material.SetFloat("_Desat", Clickable ? 0F : 1F);
         }
 

@@ -26,30 +26,12 @@ namespace Essentials
         public override void Load()
         {
             Harmony.PatchAll();
-
-#if !S20210615 && !S20210630
-            PluginSingleton<EssentialsPlugin>.Instance = this;
-
-            RegisterInIl2CppAttribute.Register();
-            RegisterCustomRpcAttribute.Register(this);
-#endif
-
             ReactorVersionShower.TextUpdated += (text) =>
             {
-#if S20201209 || S20210305 || S202103313
-                string txt = text.Text;
-#else
                 string txt = text.text;
-#endif
 
                 int index = txt.IndexOf('\n');
-                txt = txt.Insert(index == -1 ? txt.Length - 1 : index, "\nEssentials " + typeof(EssentialsPlugin).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion);
-
-#if S20201209 || S20210305 || S202103313
-                text.Text = txt;
-#else
-                text.text = txt;
-#endif
+                txt = txt.Insert(index == -1 ? txt.Length - 1 : index, "\nEssentials " + typeof(EssentialsPlugin).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion); text.text = txt;
             };
 
             HudPosition.Load();

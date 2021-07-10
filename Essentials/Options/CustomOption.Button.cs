@@ -1,4 +1,6 @@
-﻿namespace Essentials.Options
+﻿using System;
+
+namespace Essentials.Options
 {
     /// <summary>
     /// A derivative of <see cref="CustomOption"/>, handling "buttons" in the options menu.
@@ -16,8 +18,8 @@
         /// <param name="initialValue">The button's initial (client sided) value, can be used to hide/show other options</param>
         public CustomOptionButton(string title, bool menu = true, bool hud = false, bool initialValue = false) : base(title, title, false, CustomOptionType.Toggle, initialValue)
         {
-            HudStringFormat = (_, name, _) => name;
-            ValueStringFormat = (_, _) => string.Empty;
+            HudStringFormat = (a, name, b) => name;
+            ValueStringFormat = (a, b) => string.Empty;
 
             MenuVisible = menu;
             HudVisible = hud;
@@ -25,8 +27,9 @@
 
         protected override bool GameObjectCreated(OptionBehaviour o)
         {
-            if (AmongUsClient.Instance?.AmHost != true || o is not ToggleOption toggle) return false;
+            if (AmongUsClient.Instance?.AmHost != true || o is not ToggleOption) return false;
 
+            var toggle = o as ToggleOption;
             toggle.transform.FindChild("CheckBox")?.gameObject?.SetActive(false);
 
             return UpdateGameObject();

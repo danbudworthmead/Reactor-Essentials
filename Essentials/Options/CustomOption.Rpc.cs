@@ -6,6 +6,7 @@ using Reactor.Networking;
 #endif
 using System;
 using System.Linq;
+using Reactor.Networking;
 
 namespace Essentials.Options
 {
@@ -37,20 +38,12 @@ namespace Essentials.Options
             }
         }*/
 
-#if S20201209 || S20210305
-        [RegisterCustomRpc]
-#else
         [RegisterCustomRpc(0)]
-#endif
         private protected class Rpc : PlayerCustomRpc<EssentialsPlugin, (byte[], CustomOptionType, object)>
         {
             public static Rpc Instance { get { return Rpc<Rpc>.Instance; } }
 
-#if S20201209 || S20210305
-            public Rpc(EssentialsPlugin plugin) : base(plugin)
-#else
             public Rpc(EssentialsPlugin plugin, uint id) : base(plugin, id)
-#endif
             {
             }
 

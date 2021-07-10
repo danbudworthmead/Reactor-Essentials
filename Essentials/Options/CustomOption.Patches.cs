@@ -188,12 +188,9 @@ namespace Essentials.Options
 
                 __result = sb.ToString();
 
-                string insert = ":";
-#if S20201209 || S20210305 || S202103313
-                if (HudTextScroller && (HudManager.Instance?.GameSettings?.Height).GetValueOrDefault() + 0.02F > HudPosition.Height) insert = " (Scroll for more):";
-#else
+                string insert = ":";                
                 if (HudTextScroller && (HudManager.Instance?.GameSettings?.renderedHeight).GetValueOrDefault() + 0.02F > HudPosition.Height) insert = " (Scroll for more):";
-#endif
+
                 __result = __result.Insert(firstNewline, insert);
 
                 // Remove last newline (for the scroller to not overscroll one line)
@@ -351,12 +348,8 @@ namespace Essentials.Options
 
             if (hudManager?.GameSettings?.transform == null) return;
 
-#if S20201209 || S20210305 || S202103313
-            hudManager.GameSettings.scale = HudTextScale;
-#else
             hudManager.GameSettings.fontSizeMin = hudManager.GameSettings.fontSizeMax = hudManager.GameSettings.fontSize = HudTextFontSize;
-#endif
-
+            
             const float XOffset = 0.066666F, YOffset = 0.1F;
 
             // Scroller disabled
@@ -382,11 +375,8 @@ namespace Essentials.Options
             if (!OptionsScroller.gameObject.active) return;
 
             // Scroll range
-#if S20201209 || S20210305 || S202103313
-            OptionsScroller.YBounds = new FloatRange(HudPosition.TopLeft.y, Mathf.Max(HudPosition.TopLeft.y, hudManager.GameSettings.Height - HudPosition.TopLeft.y + 0.02F));
-#else
             OptionsScroller.YBounds = new FloatRange(HudPosition.TopLeft.y, Mathf.Max(HudPosition.TopLeft.y, hudManager.GameSettings.renderedHeight - HudPosition.TopLeft.y + 0.02F));
-#endif
+
 
             float x = HudPosition.TopLeft.x + XOffset;
             OptionsScroller.XBounds = new FloatRange(x, x);

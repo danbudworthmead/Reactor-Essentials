@@ -1,18 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <LangVersion>latest</LangVersion>
-    <Version>0.2.0-dev13</Version>
+    <Version>1.0.0</Version>
+    <GameVersion>2021.6.30</GameVersion>
 
-    <Description>Among Us modding essentials</Description>
-    <Authors>CoMaNdO</Authors>
-    <Configurations>S20201209;S20210305;S202103313;S20210412;S20210510;S20210615;S20210630</Configurations>
-
-    <Optimize>false</Optimize>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <NoWarn>1701;1702;</NoWarn>
+    <Description>Essentials</Description>
+    <Authors>DorCoMaNdO</Authors>
+    <LangVersion>9</LangVersion>
   </PropertyGroup>
 
-  <Import Project="../AmongUs.props" />
-  <Import Project="../Reactor.props" />
+  <Target Name="Copy" AfterTargets="Build">
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(AmongUs)/BepInEx/plugins/$(AssemblyName)-$(GameVersion).dll" />
+  </Target>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\**\*" />
+
+    <Reference Include="$(AmongUs)\BepInEx\core\*.dll">
+      <Private>false</Private>
+    </Reference>
+
+    <Reference Include="$(AmongUs)\BepInEx\unhollowed\*.dll">
+      <Private>false</Private>
+    </Reference>
+
+    <Reference Remove="$(AmongUs)\BepInEx\unhollowed\netstandard.dll;$(AmongUs)\BepInEx\unhollowed\Newtonsoft.Json.dll" />
+
+    <Reference Include="$(AmongUs)\BepInEx\plugins\Reactor.dll" />
+  </ItemGroup>
 </Project>

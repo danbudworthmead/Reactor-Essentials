@@ -5,3 +5,4 @@ dotnet build -c S20210412
 dotnet build -c S20210510
 dotnet build -c S20210615
 dotnet build -c S20210630
+pause
